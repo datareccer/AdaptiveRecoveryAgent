@@ -98,6 +98,7 @@ This repository is documentation-only, so there is **no build step** yet.
 If you add code later, document it in this section using a simple checklist like:
 
 - [ ] Install runtime dependencies
+- [ ] Create required directories (for example, `mkdir -p app/src/main/res/xml`)
 - [ ] Run `npm install` or `pip install -r requirements.txt`
 - [ ] Run `npm run build` or `make build`
 
