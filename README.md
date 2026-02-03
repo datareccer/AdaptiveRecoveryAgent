@@ -107,6 +107,17 @@ If you add code later, document it in this section using a simple checklist like
 If you add an Android app later, you may need a debug-only network security config.
 Save it as `app/src/main/res/xml/network_security_config.xml`:
 
+Then reference it from your `app/src/main/AndroidManifest.xml`:
+
+```xml
+<application
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:networkSecurityConfig="@xml/network_security_config"
+    android:theme="@style/Theme.AppCompat.DayNight">
+```
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
