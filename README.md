@@ -102,6 +102,28 @@ If you add code later, document it in this section using a simple checklist like
 - [ ] Run `npm install` or `pip install -r requirements.txt`
 - [ ] Run `npm run build` or `make build`
 
+### 4.1 Example Android network security config (debug only)
+
+If you add an Android app later, you may need a debug-only network security config.
+Save it as `app/src/main/res/xml/network_security_config.xml`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
+```
+
 ## 5) How to use this tool to recover a Gmail account (safe + official)
 
 **Important:** Only use official Google flows. Never share passwords, recovery codes, or 2FA secrets with anyone.
