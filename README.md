@@ -2,6 +2,10 @@
 
 This repository is a lightweight documentation hub for setting up a clean workspace, tracking dependencies, and safely guiding a Gmail account recovery process using **official Google flows**.
 
+## 0) Scope and safety boundaries
+
+This project does **not** include or support tooling intended to bypass security controls (for example, device unlockers, password cracking, or account compromise). If you need account access, follow the **official Google Account Recovery** process and associated security guidance below. This repo is intentionally documentation-only and focused on compliant recovery steps.
+
 ## 1) Dependency checklist
 
 Use this checklist before you start:
