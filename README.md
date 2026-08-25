@@ -1,174 +1,86 @@
 # Adaptive Recovery Agent
 
-This repository is a lightweight documentation hub for setting up a clean workspace, tracking dependencies, and safely guiding a Gmail account recovery process using **official Google flows**.
+**Digital Damage approved recovery workflow for authorized account and device recovery.**
 
-## 0) Scope and safety boundaries
+Adaptive Recovery Agent is a documentation-first recovery assistant. It helps an authorized owner organize evidence, select official recovery paths, record attempts, and harden an account after recovery. It does **not** bypass authentication, defeat MFA, crack passwords, extract credentials, or unlock devices without authorization.
 
-This project does **not** include or support tooling intended to bypass security controls (for example, device unlockers, password cracking, or account compromise). If you need account access, follow the **official Google Account Recovery** process and associated security guidance below. This repo is intentionally documentation-only and focused on compliant recovery steps.
+## What it does
 
-## 1) Dependency checklist
+- Guides recovery through the provider's official recovery process.
+- Builds a local recovery case record without storing passwords or MFA secrets.
+- Tracks recovery attempts and outcomes.
+- Provides post-recovery security-hardening checklists.
+- Keeps an auditable, reproducible workflow suitable for professional support work.
 
-Use this checklist before you start:
+## What it does not do
 
-- [ ] **Git** (version control)
-- [ ] **GitHub account** (for hosting the repo)
-- [ ] **Terminal** (macOS Terminal, Windows PowerShell, or Linux shell)
-- [ ] **Nano** (terminal text editor; usually preinstalled on macOS/Linux)
-- [ ] **Web browser** (for GitHub and Google Account Recovery)
+- Password cracking or credential stuffing.
+- MFA bypass or token theft.
+- Security-question bypass.
+- Session-cookie extraction.
+- Device-lock bypass.
+- Account takeover automation.
 
-Optional but helpful:
-
-- [ ] **SSH keys** (recommended for GitHub authentication)
-- [ ] **2FA app** (Google Authenticator or similar)
-
-## 2) Set up Git and GitHub (easy steps)
-
-### 2.1 Install Git
-
-**macOS**
+## Quick start
 
 ```bash
-git --version
-```
-
-If Git is not installed, macOS will prompt you to install the Command Line Tools.
-
-**Windows**
-
-Download and install **Git for Windows** from https://git-scm.com/download/win.
-
-**Linux (Debian/Ubuntu)**
-
-```bash
-sudo apt-get update
-sudo apt-get install -y git
-```
-
-### 2.2 Configure Git (one-time)
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "you@example.com"
-```
-
-### 2.3 Create a GitHub account
-
-1. Go to https://github.com and sign up.
-2. Verify your email address.
-
-### 2.4 Create and link the repository
-
-```bash
-mkdir AdaptiveRecoveryAgent
+git clone https://github.com/datareccer/AdaptiveRecoveryAgent.git
 cd AdaptiveRecoveryAgent
-git init
-git remote add origin git@github.com:YOUR_USERNAME/AdaptiveRecoveryAgent.git
+python3 -m recovery_agent --help
 ```
 
-> If you prefer HTTPS, replace the remote URL with:
-> `https://github.com/YOUR_USERNAME/AdaptiveRecoveryAgent.git`
+Python 3.11+ is recommended. The core workflow uses only the Python standard library.
 
-### 2.5 First commit and push
+## Case workflow
+
+1. Confirm that the requester owns or is explicitly authorized to recover the account/device.
+2. Create a case identifier.
+3. Record only non-secret facts: provider, account identifier, date, known recovery channels, and outcome.
+4. Open the provider's official recovery page manually.
+5. Follow the provider's verification process.
+6. Record the outcome without recording passwords, recovery codes, session tokens, or MFA seeds.
+7. After successful recovery, change the password, enable MFA, review sessions, remove unknown devices/apps, and rotate exposed credentials.
+
+## Commands
+
+Create a case:
 
 ```bash
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git push -u origin main
+python3 -m recovery_agent new-case --provider google --account example@example.com
 ```
 
-## 3) Editing files with Nano (simple)
-
-Open a file with Nano:
+Record an attempt:
 
 ```bash
-nano README.md
+python3 -m recovery_agent add-attempt --case cases/<case-id>.json --method official-recovery --outcome pending
 ```
 
-Nano tips:
+Show a case:
 
-- **Save**: press `CTRL + O`, then `Enter`
-- **Exit**: press `CTRL + X`
-- **Search**: press `CTRL + W`
-
-## 4) Build instructions (current repo)
-
-This repository is documentation-only, so there is **no build step** yet.
-
-If you add code later, document it in this section using a simple checklist like:
-
-- [ ] Install runtime dependencies
-- [ ] Create required directories (for example, `mkdir -p app/src/main/res/xml`)
-- [ ] Run `npm install` or `pip install -r requirements.txt`
-- [ ] Run `npm run build` or `make build`
-
-### 4.1 Example Android network security config (debug only)
-
-If you add an Android app later, you may need a debug-only network security config.
-Save it as `app/src/main/res/xml/network_security_config.xml`:
-
-Then reference it from your `app/src/main/AndroidManifest.xml`:
-
-```xml
-<application
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:networkSecurityConfig="@xml/network_security_config"
-    android:theme="@style/Theme.AppCompat.DayNight">
+```bash
+python3 -m recovery_agent show --case cases/<case-id>.json
 ```
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <debug-overrides>
-        <trust-anchors>
-            <certificates src="user" />
-        </trust-anchors>
-    </debug-overrides>
-    <base-config cleartextTrafficPermitted="true">
-        <trust-anchors>
-            <certificates src="system" />
-            <certificates src="user" />
-        </trust-anchors>
-    </base-config>
-</network-security-config>
+## Data handling
+
+Case files intentionally exclude passwords, MFA secrets, recovery codes, cookies, access tokens, and private keys. Treat case metadata as sensitive and store it with appropriate filesystem permissions.
+
+## Provider guidance
+
+For Google accounts, use the official Google Account Recovery flow: https://accounts.google.com/signin/recovery
+
+For Microsoft accounts, use the official Microsoft account recovery flow: https://account.live.com/password/reset
+
+For Apple Accounts, use the official Apple account recovery flow: https://iforgot.apple.com/
+
+Never ask a user to send you their password, recovery code, authenticator seed, or session cookie.
+
+## Testing
+
+```bash
+python3 -m unittest discover -s tests -v
 ```
 
-## 5) How to use this tool to recover a Gmail account (safe + official)
+## Digital Damage standard
 
-**Important:** Only use official Google flows. Never share passwords, recovery codes, or 2FA secrets with anyone.
-
-### 5.1 Official Google Account Recovery
-
-1. Go to **https://accounts.google.com/signin/recovery**.
-2. Enter your Gmail address.
-3. Follow the prompts. Use a device and location you’ve used before if possible.
-4. Provide any recovery email/phone you still control.
-5. If asked, answer security questions as accurately as possible.
-
-### 5.2 Increase your chances of success
-
-- Use a **trusted device** and **usual Wi‑Fi network**.
-- Try at a time when you typically access your account.
-- If you recently changed your password, wait 24–72 hours.
-- Check your recovery email/phone for verification codes.
-
-### 5.3 If recovery fails
-
-- Try again later from the same device and network.
-- Use the **"Try another way"** option when offered.
-- Make sure your recovery email/phone is still active.
-
-### 5.4 After recovery (security hardening)
-
-- Change your password to something **strong and unique**.
-- Review **Account Security** at https://myaccount.google.com/security.
-- Enable **2‑Step Verification** if not already enabled.
-- Remove any unknown devices or third‑party app access.
-
----
-
-## 6) Notes
-
-This repository intentionally avoids any automation that could bypass or weaken account security. It is focused on **clear, safe instructions** and good security hygiene.
+A release is considered ready when it is reproducible, documented, testable, auditable, secret-safe, and incapable of silently bypassing an authentication control.
